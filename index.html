@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://unpkg.com/vue"></script>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      body {
+        font-family: Helvetica, Arial, sans-serif;
+        font-size: 20px;
+        height: 100%;
+        display: table;
+        width: 100%;
+      }
+      #app {
+        display: table-cell;
+        width: 300px;
+        margin: 100px;
+        vertical-align: top;
+        text-align: center;
+      }
+      .todos {
+        display: grid;
+        width: 300px;
+        margin: 30px auto;
+      }
+      .todo {
+        display: flex;
+        justify-content: space-between;
+        background-color: whitesmoke;
+        width: 300px;
+        height: 30px;
+        margin: 5px;
+        padding: 5px;
+      }
+      .todo:nth-child(even) {
+        background-color: white;
+      }
+      span.completed {
+        text-decoration: line-through;
+      }
+      span.btn {
+        display: inline-block;
+        padding: 3px;
+        border: solid 2px grey;
+      }
+      span.active {
+        background-color: grey;
+        color: white;
+      }
+      input {
+        width: 20px;
+        height: 20px;
+      }
+      #enterField {
+        width: 200px;
+        height: 20px;
+      }
+      .empty,
+      .filter {
+        display: block;
+        margin: 30px;
+      }
+      button,
+      input,
+      span:hover {
+        cursor: pointer;
+      }
+    </style>
+
+    <title>Eureka</title>
+  </head>
+  <body>
+    <div id="app">
+      <input v-model="value" id="enterField" ref="field" />
+      <button :value="value" @click="todo(value)">Добавить задачу</button>
+      <div class="filter" v-if="todos.length > 0">
+        <span
+          class="btn"
+          :class="{active: activeFilter == 'all' }"
+          v-on:click="setFilter('all')"
+          >Все</span
+        >
+        <span
+          class="btn"
+          :class="{active: activeFilter == 'active' }"
+          v-on:click="setFilter('active')"
+          >Активные</span
+        >
+        <span
+          class="btn"
+          :class="{active: activeFilter == 'completed' }"
+          v-on:click="setFilter('completed')"
+          >Завершенные</span
+        >
+      </div>
+      <div class="todos" v-if="filtered.length > 0">
+        <div class="todo" v-for="todo in filtered">
+          <input type="checkbox" v-model="todo.completed" />
+          <span :class="{completed: todo.completed}"
+            >#{{ todo.id }} {{ todo.title }}
+          </span>
+          <button v-on:click="remove(todo)">Удалить</button>
+        </div>
+      </div>
+      <div class="empty" v-else>Нет задач</div>
+    </div>
+    <script src="/app.js"></script>
+  </body>
+</html>
